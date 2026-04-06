@@ -297,6 +297,12 @@ function enrichLegacyQuestion(
   return {
     ...question,
     subjectSlug: question.subjectSlug as SubjectSlug,
+    choices: question.choices.map((choice) => ({
+      id: choice.id as ChoiceId,
+      text: choice.text
+    })),
+    correctChoiceId: question.correctChoiceId as ChoiceId,
+    difficulty: question.difficulty as Difficulty,
     grade: 5,
     assessment,
     itemType: "multiple_choice",
