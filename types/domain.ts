@@ -33,6 +33,13 @@ export interface QuestionChoice {
   text: string;
 }
 
+export interface ReadingPassage {
+  id: string;
+  genre: "informational" | "literary";
+  title: string;
+  text: string;
+}
+
 export interface Question {
   id: string;
   subjectSlug: SubjectSlug;
@@ -51,6 +58,8 @@ export interface Question {
   difficulty: Difficulty;
   tags: string[];
   alignmentNote: string;
+  skill?: string;
+  passage?: ReadingPassage;
   sourceMetadata: {
     source: string;
     note: string;

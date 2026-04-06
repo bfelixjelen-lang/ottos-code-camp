@@ -1,5 +1,6 @@
 import { mathMilestonesItems } from "@/lib/seed/math-milestones-items";
 import type {
+  ChoiceId,
   Competency,
   Difficulty,
   Question,
