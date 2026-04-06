@@ -34,6 +34,12 @@ export const elaMilestonesPassages: ReadingPassage[] = [
     text: "Maya heard a faint meow coming from behind the bushes. She carefully pushed aside the branches and found a small, trembling kitten. At first, Maya hesitated. She knew her family had never owned a pet before. Still, she gently picked up the kitten and carried it home. Over the next few days, Maya fed and cared for the kitten. Eventually, her parents agreed she could keep it. Maya smiled, knowing she had made the right choice."
   },
   {
+    id: "G5-ELA-P004",
+    genre: "informational",
+    title: "City Life vs. Country Life",
+    text: "Living in a city and living in the country offer different experiences. In cities, people often live close together and have access to many stores, schools, and transportation options. In contrast, people in the country usually have more space and quieter surroundings. However, they may need to travel farther to reach stores or services. Both lifestyles have advantages depending on what a person values most."
+  },
+  {
     id: "G5-ELA-P005",
     genre: "poetry",
     title: "Morning Light",
@@ -266,6 +272,81 @@ export const elaMilestonesItems: RawElaMilestonesItem[] = [
     ],
     answer_key: "B",
     explanation: "Feeding and caring for the kitten shows that Maya acts responsibly."
+  },
+  {
+    id: "G5-ELA-016",
+    passage_id: "G5-ELA-P004",
+    standard_code: "5.T.SS.1",
+    skill: "text_structure",
+    stem: "What text structure is used?",
+    choices: [
+      { key: "A", text: "Sequence" },
+      { key: "B", text: "Compare and contrast" },
+      { key: "C", text: "Cause and effect" },
+      { key: "D", text: "Problem and solution" }
+    ],
+    answer_key: "B",
+    explanation: "The passage compares city life and country life by showing how they are alike and different."
+  },
+  {
+    id: "G5-ELA-017",
+    passage_id: "G5-ELA-P004",
+    standard_code: "5.T.C.1",
+    skill: "main_idea",
+    stem: "What is the main idea?",
+    choices: [
+      { key: "A", text: "Cities are better than the country." },
+      { key: "B", text: "Country life is quieter." },
+      { key: "C", text: "City and country life have different advantages." },
+      { key: "D", text: "People should move often." }
+    ],
+    answer_key: "C",
+    explanation: "The passage explains both lifestyles and shows that each has its own advantages."
+  },
+  {
+    id: "G5-ELA-018",
+    passage_id: "G5-ELA-P004",
+    standard_code: "5.L.V.1",
+    skill: "vocabulary",
+    stem: "What does \"contrast\" most nearly mean?",
+    choices: [
+      { key: "A", text: "To compare similarities" },
+      { key: "B", text: "To show differences" },
+      { key: "C", text: "To explain clearly" },
+      { key: "D", text: "To summarize" }
+    ],
+    answer_key: "B",
+    explanation: "Contrast means to point out differences between two things."
+  },
+  {
+    id: "G5-ELA-019",
+    passage_id: "G5-ELA-P004",
+    standard_code: "5.T.T.3",
+    skill: "inference",
+    stem: "Which person would most likely prefer country life?",
+    choices: [
+      { key: "A", text: "Someone who enjoys quiet space" },
+      { key: "B", text: "Someone who likes crowded places" },
+      { key: "C", text: "Someone who uses public transportation daily" },
+      { key: "D", text: "Someone who works in a large office" }
+    ],
+    answer_key: "A",
+    explanation: "The passage says country life offers more space and quieter surroundings."
+  },
+  {
+    id: "G5-ELA-020",
+    passage_id: "G5-ELA-P004",
+    standard_code: "5.T.RA.1",
+    skill: "evidence",
+    stem: "Which detail supports country living?",
+    choices: [
+      { key: "A", text: "Access to transportation" },
+      { key: "B", text: "Many stores nearby" },
+      { key: "C", text: "More space and quiet surroundings" },
+      { key: "D", text: "Close living conditions" }
+    ],
+    answer_key: "C",
+    explanation: "That detail directly names the benefits of living in the country."
   },
   {
     id: "G5-ELA-021",
