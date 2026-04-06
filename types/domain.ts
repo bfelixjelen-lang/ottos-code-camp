@@ -36,6 +36,7 @@ export interface QuestionChoice {
 export interface ReadingPassage {
   id: string;
   genre: "informational" | "literary" | "poetry";
+  structure?: string;
   title: string;
   text: string;
 }
@@ -60,6 +61,7 @@ export interface Question {
   alignmentNote: string;
   skill?: string;
   passage?: ReadingPassage;
+  passages?: ReadingPassage[];
   sourceMetadata: {
     source: string;
     note: string;

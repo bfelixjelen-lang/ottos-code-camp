@@ -31,6 +31,12 @@ export function AssessmentPlayer({
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const currentQuestion = session.questions[currentIndex];
+  const visiblePassages =
+    currentQuestion.passages && currentQuestion.passages.length > 0
+      ? currentQuestion.passages
+      : currentQuestion.passage
+        ? [currentQuestion.passage]
+        : [];
   const answeredCount = useMemo(
     () => Object.values(answers).filter(Boolean).length,
     [answers]
@@ -188,24 +194,34 @@ export function AssessmentPlayer({
               <div className="mt-3 flex flex-wrap gap-2">
                 <Badge>{currentQuestion.standardCode}</Badge>
                 <Badge>{currentQuestion.reportingCategory}</Badge>
-                {currentQuestion.skill ? (
+              {currentQuestion.skill ? (
                   <Badge>
                     {currentQuestion.skill.replaceAll("_", " ")}
                   </Badge>
                 ) : null}
                 <Badge>DOK {currentQuestion.dok}</Badge>
               </div>
-              {currentQuestion.passage ? (
-                <div className="mt-4 rounded-3xl border border-[var(--line)] bg-[var(--surface-muted)] p-5">
-                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--muted)]">
-                    {currentQuestion.passage.genre} passage
-                  </p>
-                  <h2 className="mt-2 text-xl font-black leading-tight">
-                    {currentQuestion.passage.title}
-                  </h2>
-                  <p className="mt-3 text-sm leading-7 text-[var(--foreground)]">
-                    {currentQuestion.passage.text}
-                  </p>
+              {visiblePassages.length > 0 ? (
+                <div className="mt-4 space-y-4">
+                  {visiblePassages.map((passage, passageIndex) => (
+                    <div
+                      key={passage.id}
+                      className="rounded-3xl border border-[var(--line)] bg-[var(--surface-muted)] p-5"
+                    >
+                      <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--muted)]">
+                        {visiblePassages.length > 1
+                          ? `Passage ${String.fromCharCode(65 + passageIndex)}`
+                          : `${passage.genre} passage`}
+                        {passage.structure ? ` - ${passage.structure.replaceAll("_", " ")}` : ""}
+                      </p>
+                      <h2 className="mt-2 text-xl font-black leading-tight">
+                        {passage.title}
+                      </h2>
+                      <p className="mt-3 whitespace-pre-line text-sm leading-7 text-[var(--foreground)]">
+                        {passage.text}
+                      </p>
+                    </div>
+                  ))}
                 </div>
               ) : null}
               <h2 className="mt-3 text-2xl font-black leading-tight">

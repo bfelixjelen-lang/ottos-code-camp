@@ -1,6 +1,7 @@
 import {
   elaMilestonesItems,
-  elaMilestonesPassages
+  elaMilestonesPassages,
+  elaMilestonesStandaloneItems
 } from "@/lib/seed/ela-milestones-items";
 import { mathMilestonesItems } from "@/lib/seed/math-milestones-items";
 import type {
@@ -173,6 +174,14 @@ export const competencies: Competency[] = [
       "Select the best textual evidence to support an idea, answer, or claim."
   },
   {
+    id: "ela-tra2-grade5",
+    subjectSlug: "ela",
+    code: "5.T.RA.2",
+    title: "Compare texts",
+    description:
+      "Compare ideas across multiple texts and explain how the texts connect to one another."
+  },
+  {
     id: "ela-tra2",
     subjectSlug: "ela",
     code: "K-5.T.RA.2",
@@ -292,13 +301,21 @@ const elaCompetencyByStandard: Record<string, string> = {
   "5.T.T.2": "ela-tt2",
   "5.T.T.3": "ela-tt3-inference",
   "5.T.T.4": "ela-tt4",
-  "5.T.RA.1": "ela-tra1"
+  "5.T.RA.1": "ela-tra1",
+  "5.T.RA.2": "ela-tra2-grade5"
 };
 
 const elaSkillLabels: Record<string, string> = {
+  author_purpose: "Author's purpose",
+  cause_effect: "Cause and effect",
+  compare: "Compare",
+  context: "Context clues",
   main_idea: "Main idea",
   character: "Character",
+  compare_texts: "Compare texts",
   figurative_language: "Figurative language",
+  sequence: "Sequence",
+  structure: "Structure",
   theme: "Theme",
   text_structure: "Text structure",
   tone: "Tone",
@@ -359,12 +376,74 @@ function getElaPassage(passageId: string) {
   return elaMilestonesPassages.find((passage) => passage.id === passageId);
 }
 
+function getElaPairPassages(pairId: string) {
+  return elaMilestonesPassages.filter((passage) => passage.id.includes(pairId));
+}
+
+function getElaDok(skill: string): 1 | 2 | 3 | 4 {
+  if (
+    skill === "inference" ||
+    skill === "evidence" ||
+    skill === "theme" ||
+    skill === "figurative_language" ||
+    skill === "tone" ||
+    skill === "compare_texts"
+  ) {
+    return 2;
+  }
+
+  return 1;
+}
+
+function getElaStandardForSkill(skill: string) {
+  switch (skill) {
+    case "main_idea":
+      return "5.T.C.1";
+    case "character":
+      return "5.T.C.2";
+    case "text_structure":
+    case "structure":
+    case "cause_effect":
+    case "sequence":
+    case "compare":
+      return "5.T.SS.1";
+    case "vocabulary":
+    case "context":
+      return "5.L.V.1";
+    case "theme":
+      return "5.T.T.2";
+    case "inference":
+    case "tone":
+    case "author_purpose":
+      return "5.T.T.3";
+    case "figurative_language":
+      return "5.T.T.4";
+    case "evidence":
+      return "5.T.RA.1";
+    case "compare_texts":
+      return "5.T.RA.2";
+    default:
+      return "5.T.RA.1";
+  }
+}
+
 const elaQuestions: Question[] = elaMilestonesItems.flatMap((item) => {
   const passage = getElaPassage(item.passage_id);
+  const pairedPassages = item.pair_id ? getElaPairPassages(item.pair_id) : [];
 
-  if (!passage) {
+  if (!passage || (item.pair_id && pairedPassages.length < 2)) {
     return [];
   }
+
+  const dok = getElaDok(item.skill);
+  const isPairedItem = pairedPassages.length > 1;
+  const baseGenre = isPairedItem ? "paired informational" : passage.genre;
+  const reportingCategory =
+    item.skill === "compare_texts"
+      ? "Paired text analysis"
+      : passage.genre === "literary" || passage.genre === "poetry"
+        ? "Literary Analysis"
+        : elaSkillLabels[item.skill] ?? "ELA Passage Practice";
 
   return [
     {
@@ -375,19 +454,9 @@ const elaQuestions: Question[] = elaMilestonesItems.flatMap((item) => {
       assessment: "Georgia Milestones",
       itemType: "multiple_choice",
       standardCode: item.standard_code,
-      reportingCategory:
-        passage.genre === "literary" || passage.genre === "poetry"
-          ? "Literary Analysis"
-          : elaSkillLabels[item.skill] ?? "ELA Passage Practice",
-      learningTarget: `${elaSkillLabels[item.skill] ?? "Reading"} in a ${passage.genre} passage.`,
-      dok:
-        item.skill === "inference" ||
-        item.skill === "evidence" ||
-        item.skill === "theme" ||
-        item.skill === "figurative_language" ||
-        item.skill === "tone"
-          ? 2
-          : 1,
+      reportingCategory,
+      learningTarget: `${elaSkillLabels[item.skill] ?? "Reading"} in a ${baseGenre} passage${isPairedItem ? " set" : ""}.`,
+      dok,
       stem: item.stem,
       choices: item.choices.map((choice) => ({
         id: choice.key,
@@ -395,31 +464,60 @@ const elaQuestions: Question[] = elaMilestonesItems.flatMap((item) => {
       })),
       correctChoiceId: item.answer_key,
       explanation: item.explanation,
-      difficulty:
-        item.skill === "inference" ||
-        item.skill === "evidence" ||
-        item.skill === "theme" ||
-        item.skill === "figurative_language" ||
-        item.skill === "tone"
-          ? "on-track"
-          : "foundation",
+      difficulty: dok > 1 ? "on-track" : "foundation",
       tags: [
         "grade5",
         "georgia-milestones",
         "ela",
-        "informational",
+        ...(isPairedItem ? ["paired-passages"] : []),
+        passage.genre,
         item.skill,
         item.standard_code
       ],
       alignmentNote: `Aligned to ${item.standard_code} through passage-based ${item.skill.replaceAll("_", " ")} practice.`,
       skill: item.skill,
       passage,
+      passages: isPairedItem ? pairedPassages : undefined,
       sourceMetadata: {
         source: "Otto's Code Camp original ELA passage set aligned to Georgia Grade 5 reporting targets",
         note: placeholderNote
       }
     }
   ];
+});
+
+const elaStandaloneQuestions: Question[] = elaMilestonesStandaloneItems.map((item) => {
+  const dok = getElaDok(item.skill);
+  const label = elaSkillLabels[item.skill] ?? "ELA skill practice";
+  const standardCode = item.standard_code ?? getElaStandardForSkill(item.skill);
+
+  return {
+    id: item.id,
+    subjectSlug: "ela",
+    competencyIds: [elaCompetencyByStandard[standardCode] ?? "ela-tra1"],
+    grade: 5,
+    assessment: "Georgia Milestones",
+    itemType: "multiple_choice",
+    standardCode,
+    reportingCategory: "ELA Skill Practice",
+    learningTarget: `${label} in standalone grade 5 ELA practice.`,
+    dok,
+    stem: item.stem,
+    choices: item.choices.map((choice) => ({
+      id: choice.key,
+      text: choice.text
+    })),
+    correctChoiceId: item.answer_key,
+    explanation: item.explanation,
+    difficulty: dok > 1 ? "on-track" : "foundation",
+    tags: ["grade5", "georgia-milestones", "ela", "standalone-skill", item.skill, standardCode],
+    alignmentNote: `Aligned to ${standardCode} through standalone ${item.skill.replaceAll("_", " ")} practice.`,
+    skill: item.skill,
+    sourceMetadata: {
+      source: "Otto's Code Camp original ELA skill-check set aligned to Georgia Grade 5 reporting targets",
+      note: placeholderNote
+    }
+  };
 });
 
 function enrichLegacyQuestion(
@@ -1122,6 +1220,7 @@ const legacyQuestions = [
 export const questions: Question[] = [
   ...mathQuestions,
   ...elaQuestions,
+  ...elaStandaloneQuestions,
   ...legacyQuestions.map(enrichLegacyQuestion)
 ];
 
