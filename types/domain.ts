@@ -37,11 +37,20 @@ export interface Question {
   id: string;
   subjectSlug: SubjectSlug;
   competencyIds: string[];
+  grade: number;
+  assessment: string;
+  itemType: "multiple_choice";
+  standardCode: string;
+  reportingCategory: string;
+  learningTarget: string;
+  dok: 1 | 2 | 3 | 4;
   stem: string;
   choices: QuestionChoice[];
   correctChoiceId: ChoiceId;
   explanation: string;
   difficulty: Difficulty;
+  tags: string[];
+  alignmentNote: string;
   sourceMetadata: {
     source: string;
     note: string;

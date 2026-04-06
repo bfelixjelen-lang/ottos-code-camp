@@ -1,5 +1,7 @@
+import { mathMilestonesItems } from "@/lib/seed/math-milestones-items";
 import type {
   Competency,
+  Difficulty,
   Question,
   Subject,
   SubjectSlug
@@ -68,6 +70,38 @@ export const competencies: Competency[] = [
     title: "Reason with decimals",
     description:
       "Add, subtract, multiply, and divide decimals in contextual and computation problems."
+  },
+  {
+    id: "math-nr5",
+    subjectSlug: "math",
+    code: "5.NR.5",
+    title: "Interpret and evaluate numerical expressions",
+    description:
+      "Write, interpret, and evaluate numerical expressions in mathematical and real-world contexts."
+  },
+  {
+    id: "math-par6",
+    subjectSlug: "math",
+    code: "5.PAR.6",
+    title: "Analyze numerical patterns",
+    description:
+      "Create and compare numerical patterns, including relationships between corresponding terms."
+  },
+  {
+    id: "math-mdr7",
+    subjectSlug: "math",
+    code: "5.MDR.7",
+    title: "Measurement, time, conversions, and data",
+    description:
+      "Solve problems involving measurement conversions, elapsed time, and interpretation of data displays."
+  },
+  {
+    id: "math-gsr8",
+    subjectSlug: "math",
+    code: "5.GSR.8",
+    title: "Geometry and volume",
+    description:
+      "Classify polygons and determine the volume of right rectangular prisms."
   },
   {
     id: "ela-tra2",
@@ -170,7 +204,114 @@ export const competencies: Competency[] = [
 const placeholderNote =
   "Original MVP practice item written from public Georgia standards descriptions and support documents. Not an official Georgia Milestones question.";
 
-export const questions: Question[] = [
+const mathCompetencyByStandard: Record<string, string> = {
+  "5.NR.1": "math-nr1",
+  "5.NR.2": "math-nr2",
+  "5.NR.3": "math-nr3",
+  "5.NR.4": "math-nr4",
+  "5.NR.5": "math-nr5",
+  "5.PAR.6": "math-par6",
+  "5.MDR.7": "math-mdr7",
+  "5.GSR.8": "math-gsr8"
+};
+
+function normalizeImportedText(value: string) {
+  return value
+    .replaceAll("Ã—", "x")
+    .replaceAll("×", "x")
+    .replaceAll("Ã·", "divided by")
+    .replaceAll("÷", "divided by")
+    .replaceAll("Â·", "-");
+}
+
+function getDifficultyFromDok(dok: 1 | 2 | 3 | 4): Difficulty {
+  if (dok === 1) {
+    return "foundation";
+  }
+
+  if (dok === 2) {
+    return "on-track";
+  }
+
+  return "challenge";
+}
+
+const mathQuestions: Question[] = mathMilestonesItems.map((item) => ({
+  id: item.id,
+  subjectSlug: "math",
+  competencyIds: [mathCompetencyByStandard[item.standard_code] ?? "math-nr1"],
+  grade: item.grade,
+  assessment: item.assessment,
+  itemType: "multiple_choice",
+  standardCode: item.standard_code,
+  reportingCategory: item.reporting_category,
+  learningTarget: item.learning_target,
+  dok: item.dok,
+  stem: normalizeImportedText(item.stem),
+  choices: item.choices.map((choice) => ({
+    id: choice.key,
+    text: normalizeImportedText(choice.text)
+  })),
+  correctChoiceId: item.answer_key,
+  explanation: normalizeImportedText(item.explanation),
+  difficulty: getDifficultyFromDok(item.dok),
+  tags: item.tags,
+  alignmentNote: item.alignment_note,
+  sourceMetadata: {
+    source: "GaDOE Grade 5 Mathematics blueprint and Otto's Code Camp original practice bank",
+    note: placeholderNote
+  }
+}));
+
+function enrichLegacyQuestion(
+  question: (typeof legacyQuestions)[number]
+): Question {
+  const primaryCompetencyId = question.competencyIds[0] ?? "";
+  const competency = getCompetencyById(primaryCompetencyId);
+  const isScience = question.subjectSlug === "science";
+  const isEla = question.subjectSlug === "ela";
+  const isSocialStudies = question.subjectSlug === "social-studies";
+
+  let reportingCategory = "Subject Practice";
+  let assessment = "Georgia Milestones";
+  const standardCode = competency?.code ?? "5.PRACTICE";
+  const learningTarget =
+    competency?.description ?? "Practice and review grade-level skills.";
+  const tags = [
+    "grade5",
+    isSocialStudies ? "georgia-standards" : "georgia-milestones",
+    question.subjectSlug
+  ];
+
+  if (isScience) {
+    reportingCategory = "Science Practice";
+  } else if (isEla) {
+    reportingCategory = "ELA Practice";
+  } else if (isSocialStudies) {
+    reportingCategory = "Social Studies Practice";
+    assessment = "Georgia Standards Practice";
+  } else {
+    reportingCategory = "Math Practice";
+  }
+
+  return {
+    ...question,
+    subjectSlug: question.subjectSlug as SubjectSlug,
+    grade: 5,
+    assessment,
+    itemType: "multiple_choice",
+    standardCode,
+    reportingCategory,
+    learningTarget,
+    dok: question.difficulty === "challenge" ? 3 : question.difficulty === "on-track" ? 2 : 1,
+    tags,
+    alignmentNote: competency
+      ? `Aligned to ${competency.code} through targeted practice.`
+      : "Aligned to grade-level targeted practice."
+  };
+}
+
+const legacyQuestions = [
   {
     id: "math-q-1",
     subjectSlug: "math",
@@ -811,6 +952,11 @@ export const questions: Question[] = [
       note: placeholderNote
     }
   }
+];
+
+export const questions: Question[] = [
+  ...mathQuestions,
+  ...legacyQuestions.map(enrichLegacyQuestion)
 ];
 
 export function getSubjectBySlug(slug: SubjectSlug) {

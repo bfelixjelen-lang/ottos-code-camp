@@ -269,7 +269,7 @@ export function getRecommendedPractice(attempts: AssessmentAttempt[]) {
       return {
         subjectSlug: competency.subjectSlug,
         competencyId: competency.id,
-        label: `${competency.code} · ${competency.title}`
+        label: `${competency.code} - ${competency.title}`
       };
     }
   }
