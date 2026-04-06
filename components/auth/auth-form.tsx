@@ -15,12 +15,14 @@ export function AuthForm({
   title,
   description,
   mode,
-  endpoint
+  endpoint,
+  successMessage
 }: {
   title: string;
   description: string;
   mode: "login" | "signup";
   endpoint: "/api/auth/login" | "/api/auth/signup";
+  successMessage?: string;
 }) {
   const router = useRouter();
   const [state, setState] = useState<AuthFormState>({});
@@ -68,6 +70,12 @@ export function AuthForm({
         <h1 className="text-3xl font-black tracking-tight">{title}</h1>
         <p className="text-sm leading-6 text-[var(--muted)]">{description}</p>
       </div>
+
+      {successMessage ? (
+        <p className="mt-6 rounded-2xl bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
+          {successMessage}
+        </p>
+      ) : null}
 
       <form className="mt-8 space-y-4" onSubmit={handleSubmit}>
         {mode === "signup" ? (
