@@ -1,3 +1,7 @@
+import {
+  elaMilestonesItems,
+  elaMilestonesPassages
+} from "@/lib/seed/ela-milestones-items";
 import { mathMilestonesItems } from "@/lib/seed/math-milestones-items";
 import type {
   ChoiceId,
@@ -103,6 +107,46 @@ export const competencies: Competency[] = [
     title: "Geometry and volume",
     description:
       "Classify polygons and determine the volume of right rectangular prisms."
+  },
+  {
+    id: "ela-tc1",
+    subjectSlug: "ela",
+    code: "5.T.C.1",
+    title: "Main idea",
+    description:
+      "Determine the main idea of a passage and explain how key details support it."
+  },
+  {
+    id: "ela-tss1-grade5",
+    subjectSlug: "ela",
+    code: "5.T.SS.1",
+    title: "Text structure",
+    description:
+      "Identify how an informational text is organized and explain how that structure shapes meaning."
+  },
+  {
+    id: "ela-lv1",
+    subjectSlug: "ela",
+    code: "5.L.V.1",
+    title: "Vocabulary in context",
+    description:
+      "Use context clues to determine the meaning of words and phrases in grade-level texts."
+  },
+  {
+    id: "ela-tt3-inference",
+    subjectSlug: "ela",
+    code: "5.T.T.3",
+    title: "Inference",
+    description:
+      "Draw reasonable inferences from a text and support them with details from the passage."
+  },
+  {
+    id: "ela-tra1",
+    subjectSlug: "ela",
+    code: "5.T.RA.1",
+    title: "Evidence",
+    description:
+      "Select the best textual evidence to support an idea, answer, or claim."
   },
   {
     id: "ela-tra2",
@@ -216,6 +260,22 @@ const mathCompetencyByStandard: Record<string, string> = {
   "5.GSR.8": "math-gsr8"
 };
 
+const elaCompetencyByStandard: Record<string, string> = {
+  "5.T.C.1": "ela-tc1",
+  "5.T.SS.1": "ela-tss1-grade5",
+  "5.L.V.1": "ela-lv1",
+  "5.T.T.3": "ela-tt3-inference",
+  "5.T.RA.1": "ela-tra1"
+};
+
+const elaSkillLabels: Record<string, string> = {
+  main_idea: "Main idea",
+  text_structure: "Text structure",
+  vocabulary: "Vocabulary in context",
+  inference: "Inference",
+  evidence: "Evidence"
+};
+
 function normalizeImportedText(value: string) {
   return value
     .replaceAll("Ã—", "x")
@@ -263,6 +323,59 @@ const mathQuestions: Question[] = mathMilestonesItems.map((item) => ({
     note: placeholderNote
   }
 }));
+
+function getElaPassage(passageId: string) {
+  return elaMilestonesPassages.find((passage) => passage.id === passageId);
+}
+
+const elaQuestions: Question[] = elaMilestonesItems.flatMap((item) => {
+  const passage = getElaPassage(item.passage_id);
+
+  if (!passage) {
+    return [];
+  }
+
+  return [
+    {
+      id: item.id,
+      subjectSlug: "ela",
+      competencyIds: [elaCompetencyByStandard[item.standard_code] ?? "ela-tra1"],
+      grade: 5,
+      assessment: "Georgia Milestones",
+      itemType: "multiple_choice",
+      standardCode: item.standard_code,
+      reportingCategory: elaSkillLabels[item.skill] ?? "ELA Passage Practice",
+      learningTarget: `${elaSkillLabels[item.skill] ?? "Reading"} in an informational passage.`,
+      dok: item.skill === "inference" || item.skill === "evidence" ? 2 : 1,
+      stem: item.stem,
+      choices: item.choices.map((choice) => ({
+        id: choice.key,
+        text: choice.text
+      })),
+      correctChoiceId: item.answer_key,
+      explanation: item.explanation,
+      difficulty:
+        item.skill === "inference" || item.skill === "evidence"
+          ? "on-track"
+          : "foundation",
+      tags: [
+        "grade5",
+        "georgia-milestones",
+        "ela",
+        "informational",
+        item.skill,
+        item.standard_code
+      ],
+      alignmentNote: `Aligned to ${item.standard_code} through passage-based ${item.skill.replaceAll("_", " ")} practice.`,
+      skill: item.skill,
+      passage,
+      sourceMetadata: {
+        source: "Otto's Code Camp original ELA passage set aligned to Georgia Grade 5 reporting targets",
+        note: placeholderNote
+      }
+    }
+  ];
+});
 
 function enrichLegacyQuestion(
   question: (typeof legacyQuestions)[number]
@@ -963,6 +1076,7 @@ const legacyQuestions = [
 
 export const questions: Question[] = [
   ...mathQuestions,
+  ...elaQuestions,
   ...legacyQuestions.map(enrichLegacyQuestion)
 ];
 

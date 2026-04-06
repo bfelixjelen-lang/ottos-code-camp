@@ -185,6 +185,29 @@ export function AssessmentPlayer({
               <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--muted)]">
                 Question {currentIndex + 1}
               </p>
+              <div className="mt-3 flex flex-wrap gap-2">
+                <Badge>{currentQuestion.standardCode}</Badge>
+                <Badge>{currentQuestion.reportingCategory}</Badge>
+                {currentQuestion.skill ? (
+                  <Badge>
+                    {currentQuestion.skill.replaceAll("_", " ")}
+                  </Badge>
+                ) : null}
+                <Badge>DOK {currentQuestion.dok}</Badge>
+              </div>
+              {currentQuestion.passage ? (
+                <div className="mt-4 rounded-3xl border border-[var(--line)] bg-[var(--surface-muted)] p-5">
+                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--muted)]">
+                    {currentQuestion.passage.genre} passage
+                  </p>
+                  <h2 className="mt-2 text-xl font-black leading-tight">
+                    {currentQuestion.passage.title}
+                  </h2>
+                  <p className="mt-3 text-sm leading-7 text-[var(--foreground)]">
+                    {currentQuestion.passage.text}
+                  </p>
+                </div>
+              ) : null}
               <h2 className="mt-3 text-2xl font-black leading-tight">
                 {currentQuestion.stem}
               </h2>

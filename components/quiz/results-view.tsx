@@ -138,6 +138,35 @@ export function ResultsView({ attemptId }: { attemptId: string }) {
               <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--muted)]">
                 Review item {index + 1}
               </p>
+              <div className="mt-3 flex flex-wrap gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-[var(--muted)]">
+                <span className="rounded-full bg-[var(--surface-muted)] px-3 py-1">
+                  {question.standardCode}
+                </span>
+                <span className="rounded-full bg-[var(--surface-muted)] px-3 py-1">
+                  {question.reportingCategory}
+                </span>
+                {question.skill ? (
+                  <span className="rounded-full bg-[var(--surface-muted)] px-3 py-1">
+                    {question.skill.replaceAll("_", " ")}
+                  </span>
+                ) : null}
+                <span className="rounded-full bg-[var(--surface-muted)] px-3 py-1">
+                  DOK {question.dok}
+                </span>
+              </div>
+              {question.passage ? (
+                <div className="mt-4 rounded-3xl border border-[var(--line)] bg-[var(--surface-muted)] p-5">
+                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--muted)]">
+                    {question.passage.genre} passage
+                  </p>
+                  <h2 className="mt-2 text-xl font-black leading-tight">
+                    {question.passage.title}
+                  </h2>
+                  <p className="mt-3 text-sm leading-7 text-[var(--foreground)]">
+                    {question.passage.text}
+                  </p>
+                </div>
+              ) : null}
               <h2 className="mt-3 text-2xl font-black leading-tight">
                 {question.stem}
               </h2>
