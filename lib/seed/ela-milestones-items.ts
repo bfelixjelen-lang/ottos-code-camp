@@ -32,6 +32,12 @@ export const elaMilestonesPassages: ReadingPassage[] = [
     genre: "literary",
     title: "The Lost Kitten",
     text: "Maya heard a faint meow coming from behind the bushes. She carefully pushed aside the branches and found a small, trembling kitten. At first, Maya hesitated. She knew her family had never owned a pet before. Still, she gently picked up the kitten and carried it home. Over the next few days, Maya fed and cared for the kitten. Eventually, her parents agreed she could keep it. Maya smiled, knowing she had made the right choice."
+  },
+  {
+    id: "G5-ELA-P005",
+    genre: "poetry",
+    title: "Morning Light",
+    text: "The sun stretches golden fingers across the sky,\nWaking the world with a gentle sigh.\nBirds sing softly as day begins,\nA quiet promise carried on the wind."
   }
 ];
 
@@ -260,5 +266,80 @@ export const elaMilestonesItems: RawElaMilestonesItem[] = [
     ],
     answer_key: "B",
     explanation: "Feeding and caring for the kitten shows that Maya acts responsibly."
+  },
+  {
+    id: "G5-ELA-021",
+    passage_id: "G5-ELA-P005",
+    standard_code: "5.T.T.4",
+    skill: "figurative_language",
+    stem: "What does \"golden fingers\" describe?",
+    choices: [
+      { key: "A", text: "Sunlight spreading across the sky" },
+      { key: "B", text: "Hands reaching upward" },
+      { key: "C", text: "Bird wings" },
+      { key: "D", text: "Cloud shapes" }
+    ],
+    answer_key: "A",
+    explanation: "The phrase is a metaphor for sunlight stretching across the sky."
+  },
+  {
+    id: "G5-ELA-022",
+    passage_id: "G5-ELA-P005",
+    standard_code: "5.T.T.3",
+    skill: "inference",
+    stem: "What time of day is described?",
+    choices: [
+      { key: "A", text: "Morning" },
+      { key: "B", text: "Afternoon" },
+      { key: "C", text: "Evening" },
+      { key: "D", text: "Midnight" }
+    ],
+    answer_key: "A",
+    explanation: "The poem describes sunrise and the beginning of the day."
+  },
+  {
+    id: "G5-ELA-023",
+    passage_id: "G5-ELA-P005",
+    standard_code: "5.T.T.2",
+    skill: "theme",
+    stem: "What is the theme?",
+    choices: [
+      { key: "A", text: "Nature brings calm and new beginnings" },
+      { key: "B", text: "Birds are noisy" },
+      { key: "C", text: "The sun is too bright" },
+      { key: "D", text: "Night is better than day" }
+    ],
+    answer_key: "A",
+    explanation: "The poem reflects the peaceful feeling of morning and the idea of a fresh start."
+  },
+  {
+    id: "G5-ELA-024",
+    passage_id: "G5-ELA-P005",
+    standard_code: "5.L.V.1",
+    skill: "vocabulary",
+    stem: "What does \"gentle\" most nearly mean?",
+    choices: [
+      { key: "A", text: "Soft" },
+      { key: "B", text: "Loud" },
+      { key: "C", text: "Fast" },
+      { key: "D", text: "Sharp" }
+    ],
+    answer_key: "A",
+    explanation: "Gentle means soft or calm."
+  },
+  {
+    id: "G5-ELA-025",
+    passage_id: "G5-ELA-P005",
+    standard_code: "5.T.T.3",
+    skill: "tone",
+    stem: "What is the tone of the poem?",
+    choices: [
+      { key: "A", text: "Excited" },
+      { key: "B", text: "Calm" },
+      { key: "C", text: "Angry" },
+      { key: "D", text: "Confused" }
+    ],
+    answer_key: "B",
+    explanation: "The soft imagery and quiet details create a calm tone."
   }
 ];

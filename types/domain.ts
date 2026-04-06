@@ -35,7 +35,7 @@ export interface QuestionChoice {
 
 export interface ReadingPassage {
   id: string;
-  genre: "informational" | "literary";
+  genre: "informational" | "literary" | "poetry";
   title: string;
   text: string;
 }

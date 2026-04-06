@@ -157,6 +157,14 @@ export const competencies: Competency[] = [
       "Determine a theme in literary text and explain how events and character actions support it."
   },
   {
+    id: "ela-tt4",
+    subjectSlug: "ela",
+    code: "5.T.T.4",
+    title: "Figurative language",
+    description:
+      "Interpret figurative language and explain how poetic language shapes meaning and imagery."
+  },
+  {
     id: "ela-tra1",
     subjectSlug: "ela",
     code: "5.T.RA.1",
@@ -283,14 +291,17 @@ const elaCompetencyByStandard: Record<string, string> = {
   "5.L.V.1": "ela-lv1",
   "5.T.T.2": "ela-tt2",
   "5.T.T.3": "ela-tt3-inference",
+  "5.T.T.4": "ela-tt4",
   "5.T.RA.1": "ela-tra1"
 };
 
 const elaSkillLabels: Record<string, string> = {
   main_idea: "Main idea",
   character: "Character",
+  figurative_language: "Figurative language",
   theme: "Theme",
   text_structure: "Text structure",
+  tone: "Tone",
   vocabulary: "Vocabulary in context",
   inference: "Inference",
   evidence: "Evidence"
@@ -365,14 +376,16 @@ const elaQuestions: Question[] = elaMilestonesItems.flatMap((item) => {
       itemType: "multiple_choice",
       standardCode: item.standard_code,
       reportingCategory:
-        passage.genre === "literary"
+        passage.genre === "literary" || passage.genre === "poetry"
           ? "Literary Analysis"
           : elaSkillLabels[item.skill] ?? "ELA Passage Practice",
       learningTarget: `${elaSkillLabels[item.skill] ?? "Reading"} in a ${passage.genre} passage.`,
       dok:
         item.skill === "inference" ||
         item.skill === "evidence" ||
-        item.skill === "theme"
+        item.skill === "theme" ||
+        item.skill === "figurative_language" ||
+        item.skill === "tone"
           ? 2
           : 1,
       stem: item.stem,
@@ -385,7 +398,9 @@ const elaQuestions: Question[] = elaMilestonesItems.flatMap((item) => {
       difficulty:
         item.skill === "inference" ||
         item.skill === "evidence" ||
-        item.skill === "theme"
+        item.skill === "theme" ||
+        item.skill === "figurative_language" ||
+        item.skill === "tone"
           ? "on-track"
           : "foundation",
       tags: [
