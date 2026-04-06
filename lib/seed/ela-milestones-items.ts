@@ -26,6 +26,12 @@ export const elaMilestonesPassages: ReadingPassage[] = [
     genre: "informational",
     title: "Why Earthworms Matter",
     text: "Earthworms are small animals that play a big role in keeping soil healthy. As they move through the ground, they create tunnels that allow air and water to reach plant roots. Earthworms also break down dead plants into nutrients that help new plants grow. Farmers often rely on earthworms to improve the quality of their soil. Without earthworms, soil would be less fertile and plants would struggle to grow."
+  },
+  {
+    id: "G5-ELA-P003",
+    genre: "literary",
+    title: "The Lost Kitten",
+    text: "Maya heard a faint meow coming from behind the bushes. She carefully pushed aside the branches and found a small, trembling kitten. At first, Maya hesitated. She knew her family had never owned a pet before. Still, she gently picked up the kitten and carried it home. Over the next few days, Maya fed and cared for the kitten. Eventually, her parents agreed she could keep it. Maya smiled, knowing she had made the right choice."
   }
 ];
 
@@ -179,5 +185,80 @@ export const elaMilestonesItems: RawElaMilestonesItem[] = [
     ],
     answer_key: "B",
     explanation: "This detail explains one specific way earthworms help the soil."
+  },
+  {
+    id: "G5-ELA-011",
+    passage_id: "G5-ELA-P003",
+    standard_code: "5.T.T.2",
+    skill: "theme",
+    stem: "What is the theme of the story?",
+    choices: [
+      { key: "A", text: "Pets are expensive to care for." },
+      { key: "B", text: "Helping others can lead to positive outcomes." },
+      { key: "C", text: "Children should always obey rules." },
+      { key: "D", text: "Animals belong in the wild." }
+    ],
+    answer_key: "B",
+    explanation: "Maya helps the kitten and that caring choice leads to a positive outcome."
+  },
+  {
+    id: "G5-ELA-012",
+    passage_id: "G5-ELA-P003",
+    standard_code: "5.T.T.3",
+    skill: "inference",
+    stem: "Why did Maya hesitate at first?",
+    choices: [
+      { key: "A", text: "She was afraid of animals." },
+      { key: "B", text: "She was unsure how her family would react." },
+      { key: "C", text: "She did not like kittens." },
+      { key: "D", text: "She was in a hurry." }
+    ],
+    answer_key: "B",
+    explanation: "The passage says Maya knew her family had never owned a pet before, so she was unsure how they would react."
+  },
+  {
+    id: "G5-ELA-013",
+    passage_id: "G5-ELA-P003",
+    standard_code: "5.L.V.1",
+    skill: "vocabulary",
+    stem: "What does \"hesitated\" most nearly mean?",
+    choices: [
+      { key: "A", text: "Rushed" },
+      { key: "B", text: "Paused or unsure" },
+      { key: "C", text: "Celebrated" },
+      { key: "D", text: "Ignored" }
+    ],
+    answer_key: "B",
+    explanation: "Hesitated means Maya paused because she was unsure what to do next."
+  },
+  {
+    id: "G5-ELA-014",
+    passage_id: "G5-ELA-P003",
+    standard_code: "5.T.C.2",
+    skill: "character",
+    stem: "Which word best describes Maya?",
+    choices: [
+      { key: "A", text: "Careless" },
+      { key: "B", text: "Kind" },
+      { key: "C", text: "Angry" },
+      { key: "D", text: "Lazy" }
+    ],
+    answer_key: "B",
+    explanation: "She gently helps the kitten and cares for it, which shows kindness."
+  },
+  {
+    id: "G5-ELA-015",
+    passage_id: "G5-ELA-P003",
+    standard_code: "5.T.RA.1",
+    skill: "evidence",
+    stem: "Which detail best supports that Maya is responsible?",
+    choices: [
+      { key: "A", text: "She heard a sound." },
+      { key: "B", text: "She fed and cared for the kitten." },
+      { key: "C", text: "She smiled." },
+      { key: "D", text: "She went outside." }
+    ],
+    answer_key: "B",
+    explanation: "Feeding and caring for the kitten shows that Maya acts responsibly."
   }
 ];

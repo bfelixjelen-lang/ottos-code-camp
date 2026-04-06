@@ -117,6 +117,14 @@ export const competencies: Competency[] = [
       "Determine the main idea of a passage and explain how key details support it."
   },
   {
+    id: "ela-tc2",
+    subjectSlug: "ela",
+    code: "5.T.C.2",
+    title: "Character understanding",
+    description:
+      "Use details from literary text to understand character traits, actions, and responses."
+  },
+  {
     id: "ela-tss1-grade5",
     subjectSlug: "ela",
     code: "5.T.SS.1",
@@ -139,6 +147,14 @@ export const competencies: Competency[] = [
     title: "Inference",
     description:
       "Draw reasonable inferences from a text and support them with details from the passage."
+  },
+  {
+    id: "ela-tt2",
+    subjectSlug: "ela",
+    code: "5.T.T.2",
+    title: "Theme",
+    description:
+      "Determine a theme in literary text and explain how events and character actions support it."
   },
   {
     id: "ela-tra1",
@@ -262,14 +278,18 @@ const mathCompetencyByStandard: Record<string, string> = {
 
 const elaCompetencyByStandard: Record<string, string> = {
   "5.T.C.1": "ela-tc1",
+  "5.T.C.2": "ela-tc2",
   "5.T.SS.1": "ela-tss1-grade5",
   "5.L.V.1": "ela-lv1",
+  "5.T.T.2": "ela-tt2",
   "5.T.T.3": "ela-tt3-inference",
   "5.T.RA.1": "ela-tra1"
 };
 
 const elaSkillLabels: Record<string, string> = {
   main_idea: "Main idea",
+  character: "Character",
+  theme: "Theme",
   text_structure: "Text structure",
   vocabulary: "Vocabulary in context",
   inference: "Inference",
@@ -344,9 +364,17 @@ const elaQuestions: Question[] = elaMilestonesItems.flatMap((item) => {
       assessment: "Georgia Milestones",
       itemType: "multiple_choice",
       standardCode: item.standard_code,
-      reportingCategory: elaSkillLabels[item.skill] ?? "ELA Passage Practice",
-      learningTarget: `${elaSkillLabels[item.skill] ?? "Reading"} in an informational passage.`,
-      dok: item.skill === "inference" || item.skill === "evidence" ? 2 : 1,
+      reportingCategory:
+        passage.genre === "literary"
+          ? "Literary Analysis"
+          : elaSkillLabels[item.skill] ?? "ELA Passage Practice",
+      learningTarget: `${elaSkillLabels[item.skill] ?? "Reading"} in a ${passage.genre} passage.`,
+      dok:
+        item.skill === "inference" ||
+        item.skill === "evidence" ||
+        item.skill === "theme"
+          ? 2
+          : 1,
       stem: item.stem,
       choices: item.choices.map((choice) => ({
         id: choice.key,
@@ -355,7 +383,9 @@ const elaQuestions: Question[] = elaMilestonesItems.flatMap((item) => {
       correctChoiceId: item.answer_key,
       explanation: item.explanation,
       difficulty:
-        item.skill === "inference" || item.skill === "evidence"
+        item.skill === "inference" ||
+        item.skill === "evidence" ||
+        item.skill === "theme"
           ? "on-track"
           : "foundation",
       tags: [
