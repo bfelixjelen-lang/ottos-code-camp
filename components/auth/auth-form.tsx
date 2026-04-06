@@ -1,28 +1,63 @@
 "use client";
 
 import Link from "next/link";
-import { useActionState } from "react";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import type { AuthFormState } from "@/app/actions/auth";
 
-const initialState: AuthFormState = {};
+interface AuthFormState {
+  error?: string;
+  success?: string;
+}
 
 export function AuthForm({
   title,
   description,
   mode,
-  action
+  endpoint
 }: {
   title: string;
   description: string;
   mode: "login" | "signup";
-  action: (
-    previousState: AuthFormState,
-    formData: FormData
-  ) => Promise<AuthFormState>;
+  endpoint: "/api/auth/login" | "/api/auth/signup";
 }) {
-  const [state, formAction, pending] = useActionState(action, initialState);
+  const router = useRouter();
+  const [state, setState] = useState<AuthFormState>({});
+  const [pending, setPending] = useState(false);
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setPending(true);
+    setState({});
+
+    const formData = new FormData(event.currentTarget);
+    const response = await fetch(endpoint, {
+      method: "POST",
+      body: formData
+    });
+
+    const result = (await response.json()) as AuthFormState & {
+      redirectTo?: string;
+    };
+
+    if (!response.ok) {
+      setState({
+        error: result.error ?? "Something went wrong. Please try again."
+      });
+      setPending(false);
+      return;
+    }
+
+    if (result.redirectTo) {
+      router.push(result.redirectTo);
+      router.refresh();
+      return;
+    }
+
+    setState(result);
+    setPending(false);
+  }
 
   return (
     <Card className="w-full max-w-md p-8">
@@ -34,7 +69,7 @@ export function AuthForm({
         <p className="text-sm leading-6 text-[var(--muted)]">{description}</p>
       </div>
 
-      <form action={formAction} className="mt-8 space-y-4">
+      <form className="mt-8 space-y-4" onSubmit={handleSubmit}>
         {mode === "signup" ? (
           <label className="block space-y-2">
             <span className="text-sm font-semibold text-[var(--foreground)]">
